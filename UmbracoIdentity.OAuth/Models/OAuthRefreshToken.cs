@@ -17,6 +17,9 @@ namespace UmbracoIdentity.OAuth.Models
         public string Subject { get; set; }
 
         [NullSetting(NullSetting = NullSettings.NotNull)]
+        public string UserType { get; set; }
+
+        [NullSetting(NullSetting = NullSettings.NotNull)]
         public string ClientId { get; set; }
 
         [NullSetting(NullSetting = NullSettings.NotNull)]

@@ -6,14 +6,16 @@ using UmbracoIdentity.OAuth.Models;
 
 namespace UmbracoIdentity.OAuth
 {
-    internal class UmbracoIdentityOAuthRefreshTokenProvider : IAuthenticationTokenProvider
+    internal abstract class UmbracoIdentityOAuthRefreshTokenProvider : IAuthenticationTokenProvider
     {
         private IOAuthStore _oauthStore;
 
-        public UmbracoIdentityOAuthRefreshTokenProvider(IOAuthStore oauthStore)
+        protected UmbracoIdentityOAuthRefreshTokenProvider(IOAuthStore oauthStore)
         {
             this._oauthStore = oauthStore;
         }
+
+        protected abstract Type UserType { get;  }
 
         public virtual async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
@@ -32,6 +34,7 @@ namespace UmbracoIdentity.OAuth
                     Key = refreshTokenId.GenerateHash(),
                     ClientId = clientId,
                     Subject = context.Ticket.Identity.Name,
+                    UserType = UserType.Name,
                     IssuedUtc = DateTime.UtcNow,
                     ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(refreshTokenLifeTime))
                 };
@@ -75,6 +78,18 @@ namespace UmbracoIdentity.OAuth
         public virtual void Receive(AuthenticationTokenReceiveContext context)
         {
             throw new NotImplementedException();
+        }
+    }
+
+    internal abstract class UmbracoIdentityOAuthRefreshTokenProvider<TUser> : UmbracoIdentityOAuthRefreshTokenProvider
+    {
+        protected UmbracoIdentityOAuthRefreshTokenProvider(IOAuthStore oauthStore)
+            : base(oauthStore)
+        { }
+
+        protected override Type UserType
+        {
+            get { return typeof(TUser); }
         }
     }
 }

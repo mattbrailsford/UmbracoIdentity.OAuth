@@ -38,7 +38,7 @@ namespace UmbracoIdentity.OAuth
         {
             var oauthStore = new TOAuthStore();
             var oauthServerProvider = new UmbracoIdentityMembersOAuthServerProvider<TUser>(oauthStore);
-            var oauthRefreshTokenProvider = new UmbracoIdentityOAuthRefreshTokenProvider(oauthStore);
+            var oauthRefreshTokenProvider = new UmbracoIdentityMembersOAuthRefreshTokenProvider<TUser>(oauthStore);
 
             app.UseUmbracoIdentityOAuthAuthentication(options, oauthServerProvider, oauthRefreshTokenProvider);
         }

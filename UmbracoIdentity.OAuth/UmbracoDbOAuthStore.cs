@@ -26,9 +26,10 @@ namespace UmbracoIdentity.OAuth
 
         public void AddRefreshToken(OAuthRefreshToken token)
         {
-            this.Db.Execute("DELETE FROM [OAuthRefreshToken] WHERE [Subject] = @0 AND [ClientId] = @1",
+            this.Db.Execute("DELETE FROM [OAuthRefreshToken] WHERE [Subject] = @0 AND [ClientId] = @1 AND [UserType] = @3",
                 token.Subject,
-                token.ClientId);
+                token.ClientId,
+                token.UserType);
 
             this.Db.Save(token);
         }
