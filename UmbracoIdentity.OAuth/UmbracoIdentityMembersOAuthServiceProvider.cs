@@ -5,10 +5,10 @@ using Microsoft.Owin.Security.OAuth;
 
 namespace UmbracoIdentity.OAuth
 {
-    public class UmbracoIdentityMembersOAuthServiceProvider<TUser> : UmbracoIdentityOAuthServerProvider
+    public class UmbracoIdentityMembersOAuthServerProvider<TUser> : UmbracoIdentityOAuthServerProvider
         where TUser : UmbracoIdentityMember, new ()
     {
-        public UmbracoIdentityMembersOAuthServiceProvider(IOAuthStore oauthStore)
+        public UmbracoIdentityMembersOAuthServerProvider(IOAuthStore oauthStore)
             : base(oauthStore)
         { }
 

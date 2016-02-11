@@ -251,6 +251,7 @@
     <Compile Include="UmbracoDbOAuthStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="UmbracoIdentityMembersOAuthServiceProvider.cs" />
     <Compile Include="UmbracoIdentityOAuthAuthenticationOptions.cs" />
     <Compile Include="UmbracoIdentityOAuthRefreshTokenProvider.cs" />
     <Compile Include="UmbracoIdentityOAuthServerProvider.cs" />
