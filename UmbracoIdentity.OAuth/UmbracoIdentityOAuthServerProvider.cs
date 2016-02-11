@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.OAuth;
 using UmbracoIdentity.OAuth.Extensions;
@@ -9,12 +8,11 @@ using UmbracoIdentity.OAuth.Models;
 
 namespace UmbracoIdentity.OAuth
 {
-    public class UmbracoMembersOAuthServerProvider<TUser> : OAuthAuthorizationServerProvider
-        where TUser : UmbracoIdentityMember, new()
+    public abstract class UmbracoIdentityOAuthServerProvider : OAuthAuthorizationServerProvider
     {
         private IOAuthStore _oauthStore;
 
-        public UmbracoMembersOAuthServerProvider(IOAuthStore oauthStore)
+        protected UmbracoIdentityOAuthServerProvider(IOAuthStore oauthStore)
         {
             this._oauthStore = oauthStore;
         }
@@ -87,24 +85,10 @@ namespace UmbracoIdentity.OAuth
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin") ?? "*";
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-            // Validate user
-            var userManager = context.OwinContext.GetUserManager<UmbracoMembersUserManager<TUser>>();
-            var user = await userManager.FindAsync(context.UserName, context.Password);
-            if (user == null)
-            {
-                context.SetError("invalid_grant", "The user name or password is incorrect.");
+            var identity = await DoGrantResourceOwnerCredentials(context);
+            
+            if (context.HasError) 
                 return;
-            }
-
-            // Set user claims
-            var identity = await userManager.ClaimsIdentityFactory.CreateAsync(userManager, user, context.Options.AuthenticationType);
- 
-            // TODO: Add roles claims once roles manager is added to UmbracoIdentity package
-            //var roleManager = context.OwinContext.Get<RoleManager<IdentityRole>>()
-            //foreach (var role in Roles.GetRolesForUser(user.UserName)) // Not sure if we should be using RolesManager here?
-            //{
-            //    identity.AddClaim(new Claim(ClaimTypes.Role, role));
-            //}
 
             var props = new AuthenticationProperties(new Dictionary<string, string>
                 {
@@ -117,7 +101,7 @@ namespace UmbracoIdentity.OAuth
             
         }
 
-        public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
+        public override async Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
         {
             var originalClient = context.Ticket.Properties.Dictionary["as:client_id"];
             var currentClient = context.ClientId;
@@ -125,18 +109,16 @@ namespace UmbracoIdentity.OAuth
             if (originalClient != currentClient)
             {
                 context.SetError("invalid_clientId", "Refresh token is issued to a different clientId.");
-                return Task.FromResult<object>(null);
+                return;
             }
 
-            var newIdentity = new ClaimsIdentity(context.Ticket.Identity);
-
-            // Update claims if needed here
-            // newIdentity.AddClaim(new Claim("newClaim", "newValue"));
-
+            var newIdentity = await DoGrantRefreshToken(context);
             var newTicket = new AuthenticationTicket(newIdentity, context.Ticket.Properties);
             context.Validated(newTicket);
-
-            return Task.FromResult<object>(null);
         }
+
+        public abstract Task<ClaimsIdentity> DoGrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context);
+
+        public abstract Task<ClaimsIdentity> DoGrantRefreshToken(OAuthGrantRefreshTokenContext context); 
     }
 }

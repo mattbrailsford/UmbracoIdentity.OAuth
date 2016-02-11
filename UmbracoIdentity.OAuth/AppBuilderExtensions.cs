@@ -36,8 +36,26 @@ namespace UmbracoIdentity.OAuth
             where TUser : UmbracoIdentityMember, new()
             where TOAuthStore : IOAuthStore, new()
         {
-            var store = new TOAuthStore();
+            var oauthStore = new TOAuthStore();
+            var oauthServiceProvider = new UmbracoIdentityMembersOAuthServiceProvider<TUser>(oauthStore);
+            var oauthRefreshTokenProvider = new UmbracoIdentityOAuthRefreshTokenProvider(oauthStore);
 
+            app.UseUmbracoIdentityOAuthAuthentication(options, oauthServiceProvider, oauthRefreshTokenProvider);
+        }
+
+        /// <summary>
+        /// Uses the umbraco identity o authentication authentication.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        /// <param name="options">The options.</param>
+        /// <param name="oAuthServerProvider">The o authentication server provider.</param>
+        /// <param name="oAuthRefreshTokenProvider">The o authentication refresh token provider.</param>
+        private static void UseUmbracoIdentityOAuthAuthentication(
+            this IAppBuilder app,
+            UmbracoMembersOAuthAuthenticationOptions options,
+            UmbracoIdentityOAuthServerProvider oAuthServerProvider,
+            UmbracoIdentityOAuthRefreshTokenProvider oAuthRefreshTokenProvider)
+        {
             // Decode audience secret
             var audienceSecretBytes = TextEncodings.Base64Url.Decode(options.AudienceSecret);
 
@@ -48,8 +66,8 @@ namespace UmbracoIdentity.OAuth
                 TokenEndpointPath = new PathString(options.TokenEndpointPath),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(options.AccessTokenLifeTime),
                 AccessTokenFormat = new JwtDataFormat(options.Issuer, options.AudienceId, audienceSecretBytes),
-                Provider = new UmbracoMembersOAuthServerProvider<TUser>(store),
-                RefreshTokenProvider = new UmbracoMembersOAuthRefreshTokenProvider(store)
+                Provider = oAuthServerProvider,
+                RefreshTokenProvider = oAuthRefreshTokenProvider
             };
 
             // Token Generation

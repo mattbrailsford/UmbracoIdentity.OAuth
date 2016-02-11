@@ -6,16 +6,16 @@ using UmbracoIdentity.OAuth.Models;
 
 namespace UmbracoIdentity.OAuth
 {
-    public class UmbracoMembersOAuthRefreshTokenProvider : IAuthenticationTokenProvider
+    public class UmbracoIdentityOAuthRefreshTokenProvider : IAuthenticationTokenProvider
     {
         private IOAuthStore _oauthStore;
 
-        public UmbracoMembersOAuthRefreshTokenProvider(IOAuthStore oauthStore)
+        public UmbracoIdentityOAuthRefreshTokenProvider(IOAuthStore oauthStore)
         {
             this._oauthStore = oauthStore;
         }
 
-        public async Task CreateAsync(AuthenticationTokenCreateContext context)
+        public virtual async Task CreateAsync(AuthenticationTokenCreateContext context)
         {
             var clientId = context.Ticket.Properties.Dictionary["as:client_id"];
             if (string.IsNullOrEmpty(clientId))
@@ -48,7 +48,7 @@ namespace UmbracoIdentity.OAuth
             context.SetToken(refreshTokenId);
         }
 
-        public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
+        public virtual async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
         {
             var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
@@ -67,12 +67,12 @@ namespace UmbracoIdentity.OAuth
             });
         }
 
-        public void Create(AuthenticationTokenCreateContext context)
+        public virtual void Create(AuthenticationTokenCreateContext context)
         {
             throw new NotImplementedException();
         }
 
-        public void Receive(AuthenticationTokenReceiveContext context)
+        public virtual void Receive(AuthenticationTokenReceiveContext context)
         {
             throw new NotImplementedException();
         }

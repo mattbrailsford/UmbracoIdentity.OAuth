@@ -21,9 +21,6 @@ namespace UmbracoIdentity.OAuth.Web
             //Single method to configure the Identity user manager for use with Umbraco
             app.ConfigureUserManagerForUmbracoMembers<UmbracoApplicationMember>();
 
-            //
-            //app.CreatePerOwinContext<RoleManager<IdentityRole>>(RoleManager<this.ToString()>.Create);
-
             // Enable the application to use a cookie to store information for the 
             // signed in user and to use a cookie to temporarily store information 
             // about a user logging in with a third party login provider 
