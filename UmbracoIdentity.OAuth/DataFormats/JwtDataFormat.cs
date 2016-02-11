@@ -5,7 +5,7 @@ using Thinktecture.IdentityModel.Tokens;
 
 namespace UmbracoIdentity.OAuth.DataFormats
 {
-    public class JwtDataFormat : ISecureDataFormat<AuthenticationTicket>
+    internal class JwtDataFormat : ISecureDataFormat<AuthenticationTicket>
     {
         private readonly string _issuer;
         private readonly string _audienceId;

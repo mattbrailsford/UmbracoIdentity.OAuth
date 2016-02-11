@@ -8,7 +8,7 @@ using UmbracoIdentity.OAuth.Models;
 
 namespace UmbracoIdentity.OAuth
 {
-    public abstract class UmbracoIdentityOAuthServerProvider : OAuthAuthorizationServerProvider
+    internal abstract class UmbracoIdentityOAuthServerProvider : OAuthAuthorizationServerProvider
     {
         private IOAuthStore _oauthStore;
 

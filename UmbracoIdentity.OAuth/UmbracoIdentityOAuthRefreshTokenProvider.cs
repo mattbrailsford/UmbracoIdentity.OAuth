@@ -6,7 +6,7 @@ using UmbracoIdentity.OAuth.Models;
 
 namespace UmbracoIdentity.OAuth
 {
-    public class UmbracoIdentityOAuthRefreshTokenProvider : IAuthenticationTokenProvider
+    internal class UmbracoIdentityOAuthRefreshTokenProvider : IAuthenticationTokenProvider
     {
         private IOAuthStore _oauthStore;
 
