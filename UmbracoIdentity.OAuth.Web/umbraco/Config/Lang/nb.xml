@@ -186,6 +186,40 @@
     <key alias="visit">Besøk</key>
     <key alias="welcome">Velkommen</key>
   </area>
+  <area alias="prompt">
+    <key alias="stay">Stay</key>
+    <key alias="discardChanges">Discard changes</key>
+    <key alias="unsavedChanges">You have unsaved changes</key>
+    <key alias="unsavedChangesWarning">Are you sure you want to navigate away from this page? - you have unsaved changes</key>
+  </area>
+  <area alias="bulk">
+    <key alias="done">Done</key>
+    
+    <key alias="deletedItem">Deleted %0% item</key>
+    <key alias="deletedItems">Deleted %0% items</key>
+    <key alias="deletedItemOfItem">Deleted %0% out of %1% item</key>
+    <key alias="deletedItemOfItems">Deleted %0% out of %1% items</key>
+
+    <key alias="publishedItem">Published %0% item</key>
+    <key alias="publishedItems">Published %0% items</key>
+    <key alias="publishedItemOfItem">Published %0% out of %1% item</key>
+    <key alias="publishedItemOfItems">Published %0% out of %1% items</key>
+
+    <key alias="unpublishedItem">Unpublished %0% item</key>
+    <key alias="unpublishedItems">Unpublished %0% items</key>
+    <key alias="unpublishedItemOfItem">Unpublished %0% out of %1% item</key>
+    <key alias="unpublishedItemOfItems">Unpublished %0% out of %1% items</key>
+
+    <key alias="movedItem">Moved %0% item</key>
+    <key alias="movedItems">Moved %0% items</key>
+    <key alias="movedItemOfItem">Moved %0% out of %1% item</key>
+    <key alias="movedItemOfItems">Moved %0% out of %1% items</key>
+
+    <key alias="copiedItem">Copied %0% item</key>
+    <key alias="copiedItems">Copied %0% items</key>
+    <key alias="copiedItemOfItem">Copied %0% out of %1% item</key>
+    <key alias="copiedItemOfItems">Copied %0% out of %1% items</key>
+  </area>
   <area alias="defaultdialogs">
     <key alias="anchorInsert">Navn på lokal link</key>
     <key alias="assignDomain">Rediger domener</key>
@@ -390,6 +424,7 @@
     <key alias="showPageOnSend">Hvilken side skal vises etter at skjemaet er sendt</key>
     <key alias="size">Størrelse</key>
     <key alias="sort">Sorter</key>
+    <key alias="submit">Submit</key> <!-- TODO: Translate this -->
     <key alias="type">Type</key>
     <key alias="typeToSearch">Søk...</key>
     <key alias="up">Opp</key>
@@ -495,6 +530,7 @@
     <key alias="greeting5">Endelig fredag!</key>
     <key alias="greeting6">Gledelig lørdag</key>
     <key alias="instruction">Logg på nedenfor</key>
+    <key alias="signInWith">Logg på med</key>
     <key alias="timeout">Din sesjon er utløpt</key>
     <key alias="bottomText"><![CDATA[<p style="text-align:right;">&copy; 2001 - %0% <br /><a href="http://umbraco.com" style="text-decoration: none" target="_blank">umbraco.com</a></p> ]]></key>
   </area>
@@ -696,6 +732,8 @@ Vennlig hilsen Umbraco roboten
     <key alias="createMatchingTemplate">Opprett tilhørende mal</key>
   </area>
   <area alias="sort">
+    <key alias="sortOrder">Sort order</key>
+    <key alias="sortCreationDate">Creation date</key>
     <key alias="sortDone">Sortering ferdig.</key>
     <key alias="sortHelp">Dra elementene opp eller ned for å arrangere dem. Du kan også klikke kolonneoverskriftene for å sortere alt på en gang.</key>
     <key alias="sortPleaseWait"><![CDATA[Vennligst vent. Elementene blir sortert, dette kan ta litt tid.<br/> <br/> Ikke lukk dette vinduet under sortering]]></key>
@@ -785,29 +823,46 @@ Vennlig hilsen Umbraco roboten
   </area>
   <area alias="grid">
     <key alias="insertControl">Sett inn element</key>
-    <key alias="addRows">Velg ett oppsett for denne seksjonen</key>
-    <key alias="addElement"><![CDATA[Kom i gang ved å trykke på <i class=" icon icon-add blue"></i> nedenfor og legg til det første elementet]]></key>
+    <key alias="chooseLayout">Velg layout</key>
+    <key alias="addRows">Legg til rad</key>
+    <key alias="addElement">Legg til innhold</key>
+    <key alias="dropElement">Slipp innhold</key>
+    <key alias="settingsApplied">Raden har tilpasset design</key>
+
+    <key alias="contentNotAllowed">Innholdstypen er ikke tillatt her</key>
+    <key alias="contentAllowed">Innholdstypen er tillatt her</key>
+
     <key alias="clickToEmbed">Klikk for å bygge inn</key>
     <key alias="clickToInsertImage">Klikk for å sette inn et bilde</key>
     <key alias="placeholderImageCaption">Bildetekst...</key>
     <key alias="placeholderWriteHere">Skriv her...</key>
+    
     <key alias="gridLayouts">Rutenettoppsett</key>
-    <key alias="gridLayoutsDetail">Et oppsett er det overordnede arbeidsområdet til ditt rutenett - du vil typisk kun behøve ét eller to</key>
+    <key alias="gridLayoutsDetail">Et oppsett er det overordnede arbeidsområdet til ditt rutenett - du vil typisk kun behøve ett eller to</key>
     <key alias="addGridLayout">Legg til rutenettoppsett</key>
-    <key alias="addGridLayoutDetail">Juster oppsettet ved at justere kolonnebredder og legg til ytterligere seksjoner</key>
+    <key alias="addGridLayoutDetail">Juster oppsettet ved å konfigurere kolonnebredder og legge til ytterligere seksjoner</key>
     <key alias="rowConfigurations">Radkonfigurasjoner</key>
     <key alias="rowConfigurationsDetail">Rader er forhåndsdefinerte celler arrangert vannrett</key>
     <key alias="addRowConfiguration">Legg til radkonfigurasjon</key>
-    <key alias="addRowConfigurationDetail">Juster raden ved å sette celle bredder og legge til flere celler</key>
+    <key alias="addRowConfigurationDetail">Juster raden ved å sette cellebredder og legge til flere celler</key>
+
     <key alias="columns">Kolonner</key>
-    <key alias="columnsDetails">Totale antallet kolonner i rutenettet</key>
+    <key alias="columnsDetails">Totalt antall kolonner i rutenettet</key>
+    
     <key alias="settings">Innstillinger</key>
     <key alias="settingsDetails">Konfigurer hvilke innstillinger brukeren kan endre</key>
+
     <key alias="styles">Stiler</key>
     <key alias="stylesDetails">Konfigurer hvilke stiler redaktørene kan endre</key>
-    <key alias="settingDialogDetails">Innstillingene lagres kun når json-konfigurasjonen er gyldig</key>
+
+    <key alias="settingDialogDetails">Innstillingene lagres kun når konfigurasjonen er gyldig</key>
+    
     <key alias="allowAllEditors">Tillatt alle editorer</key>
     <key alias="allowAllRowConfigurations">Tillat alle radkonfigurasjoner</key>
+    <key alias="setAsDefault">Bruk som standard</key>
+    <key alias="chooseExtra">Velg ekstra</key>
+    <key alias="chooseDefault">Velg standard</key>
+    <key alias="areAdded">er lagt til</key>
   </area>
   <area alias="templateEditor">
     <key alias="alternativeField">Alternativt felt</key>

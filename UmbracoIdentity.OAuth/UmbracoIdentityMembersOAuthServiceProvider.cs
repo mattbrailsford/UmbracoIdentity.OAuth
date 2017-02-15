@@ -1,7 +1,9 @@
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security.OAuth;
+using UmbracoIdentity.Models;
 
 namespace UmbracoIdentity.OAuth
 {
@@ -23,15 +25,8 @@ namespace UmbracoIdentity.OAuth
                 return null;
             }
 
-            //// Set user claims
+            // Set user claims
             var identity = await userManager.ClaimsIdentityFactory.CreateAsync(userManager, user, context.Options.AuthenticationType);
-
-            // TODO: Add roles claims once roles manager is added to UmbracoIdentity package
-            //var roleManager = context.OwinContext.Get<RoleManager<IdentityRole>>()
-            //foreach (var role in Roles.GetRolesForUser(user.UserName)) // Not sure if we should be using RolesManager here?
-            //{
-            //    identity.AddClaim(new Claim(ClaimTypes.Role, role));
-            //}
 
             return identity;
         }

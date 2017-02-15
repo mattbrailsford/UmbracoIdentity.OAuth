@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Umbraco.Core;
+﻿using Umbraco.Core;
 using Umbraco.Core.Logging;
 using Umbraco.Core.Persistence;
 using UmbracoIdentity.OAuth.Models;
@@ -26,7 +25,7 @@ namespace UmbracoIdentity.OAuth
 
         public void AddRefreshToken(OAuthRefreshToken token)
         {
-            this.Db.Execute("DELETE FROM [OAuthRefreshToken] WHERE [Subject] = @0 AND [ClientId] = @1 AND [UserType] = @3",
+            this.Db.Execute("DELETE FROM [OAuthRefreshToken] WHERE [Subject] = @0 AND [ClientId] = @1 AND [UserType] = @2",
                 token.Subject,
                 token.ClientId,
                 token.UserType);

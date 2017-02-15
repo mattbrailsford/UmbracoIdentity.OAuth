@@ -1,3 +1,5 @@
+using UmbracoIdentity.Models;
+
 namespace UmbracoIdentity.OAuth
 {
     internal class UmbracoIdentityMembersOAuthRefreshTokenProvider<TUser> : UmbracoIdentityOAuthRefreshTokenProvider<TUser>
