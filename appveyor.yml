@@ -24,7 +24,7 @@ artifacts:
 deploy:
     # MyGet Deployment for builds & releases
   - provider: NuGet
-    server: https://www.myget.org/F/umbracoidentity-oauth/
+    server: https://www.myget.org/F/umbracoidentity-oauth/api/v2/package
     symbol_server: https://www.myget.org/F/umbracoidentity-oauth/symbols/api/v2/package
     api_key:
       secure: gHDTL46KZcLzj6J8m//TJgaCOJCl9ixR//rXjO18HRlCsfPYYz7dU81u2D5zd+ZN
