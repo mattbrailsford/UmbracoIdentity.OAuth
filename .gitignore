@@ -241,6 +241,8 @@ Cached/
 # Ignore Umbraco content cache file
 **/App_Data/umbraco.config
 
+src/UmbracoIdentity.OAuth.TestHarness
+
 # Don't ignore Umbraco packages (VisualStudio.gitignore mistakes this for a NuGet packages folder)
 # Make sure to include details from VisualStudio.gitignore BEFORE this
 !**/App_Data/[Pp]ackages/
@@ -249,4 +251,3 @@ Cached/
 # Custom
 /Deploy/*
 /Assets/*
-!/Src/WelcomeToYorkshire.Website/[Bb]in/
