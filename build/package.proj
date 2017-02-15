@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Package" ToolsVersion="14.0">
+
+	<!-- IMPORTS -->
+	<PropertyGroup>
+		<MSBuildCommunityTasksPath>$(MSBuildProjectDirectory)\tools\MSBuildCommunityTasks</MSBuildCommunityTasksPath>
+		<MSBuildNugetTasksPath>$(MSBuildProjectDirectory)\tools\MSBuildNugetTasks</MSBuildNugetTasksPath>
+		<AppVeyorUmbracoPath>$(MSBuildProjectDirectory)\tools\AppVeyorUmbraco</AppVeyorUmbracoPath>
+	</PropertyGroup>
+
+	<Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.Targets" />
+	<Import Project="$(MSBuildNugetTasksPath)\MSBuild.NuGet.Tasks.Targets" />
+	<Import Project="$(AppVeyorUmbracoPath)\AppVeyorUmbraco.Targets" />
+
+	<!-- SHARED PROPERTIES -->
+	<PropertyGroup>
+		<ProjectName>UmbracoIdentity.OAuth</ProjectName>
+		<CorePackageId>UmbracoIdentity.OAuth.Core</CorePackageId>
+		<CorePackageName>UmbracoIdentity.OAuth.Core</CorePackageName>
+		<PackageId>UmbracoIdentity.OAuth</PackageId>
+		<PackageName>UmbracoIdentity.OAuth</PackageName>
+		<Readme>An ad-on library to UmbracoIdentity to allow OAuth authentication for front-end members</Readme>
+		<AuthorName>Matt Brailsford</AuthorName>
+		<AuthorUrl>https://github.com/mattbrailsford/UmbracoIdentity.OAuth/graphs/contributors</AuthorUrl>
+		<Owners>Matt Brailsford</Owners>
+		<Copyright>Copyright &#169; 2017 Matt Brailsford</Copyright>
+		<PackageLicenseName>MIT license</PackageLicenseName>
+		<PackageLicenseUrl>http://opensource.org/licenses/MIT</PackageLicenseUrl>		
+		<RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+		<ProjectUrl>https://github.com/mattbrailsford/UmbracoIdentity.OAuth</ProjectUrl>
+		<IconUrl>https://raw.githubusercontent.com/umco/umbraco-stacked-content/master/docs/img/logo.png</IconUrl>
+		<Tags>umbraco umco</Tags>
+		<Language>en-GB</Language>
+	</PropertyGroup>
+
+	<!-- APPVEYOR PROPERTIES -->
+	<PropertyGroup>
+		<FileVersion>$(APPVEYOR_BUILD_VERSION)</FileVersion>
+	</PropertyGroup>
+	<Choose>
+		<When Condition="$(APPVEYOR_BUILD_NUMBER) != '' And $(APPVEYOR_REPO_TAG) != 'true' ">
+			<PropertyGroup>
+				<Release>false</Release>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<Release>true</Release>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
+
+	<Choose>
+		<When Condition="$(Release) == 'false' And $(UMBRACO_PACKAGE_PRERELEASE_SUFFIX) == 'rtm'">
+			<PropertyGroup>
+				<AbortBuild>true</AbortBuild>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<AbortBuild>false</AbortBuild>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
+
+	<!-- PATHS -->
+	<PropertyGroup>
+		<BuildConfig>Release</BuildConfig>
+		<RootDir>$(MSBuildProjectDirectory)\..</RootDir>
+		<BuildNuGetDir>$(MSBuildProjectDirectory)\_nuget</BuildNuGetDir>
+		<ArtifactsDir>$(RootDir)\artifacts</ArtifactsDir>
+		<CoreProjectDir>$(RootDir)\src\$(ProjectName)</CoreProjectDir>
+	</PropertyGroup>
+
+	<!-- TARGETS -->
+	<Target Name="GetProductVersion">
+		<Error Condition="$(AbortBuild) == 'true'" Text="Aborting the build as the UMBRACO_PACKAGE_PRERELEASE_SUFFIX suffix is set 'rtm' but APPVEYOR_REPO_TAG is not 'true'" />
+		<GetProductVersion BuildVersion="$(APPVEYOR_BUILD_VERSION)" BuildSuffix="$(UMBRACO_PACKAGE_PRERELEASE_SUFFIX)" Release="$(Release)">
+			<Output TaskParameter="ProductVersion" PropertyName="ProductVersion"/>
+		</GetProductVersion>
+	</Target>
+
+	<!-- CLEAN -->
+	<Target Name="Clean" DependsOnTargets="GetProductVersion">
+		<RemoveDir Directories="$(BuildNuGetDir)" Condition="Exists('$(BuildNuGetDir)')" />
+		<RemoveDir Directories="$(ArtifactsDir)" Condition="Exists('$(ArtifactsDir)')" />
+		<MakeDir Directories="$(BuildNuGetDir)" />
+		<MakeDir Directories="$(ArtifactsDir)" />
+	</Target>
+
+	<!-- UPDATE PROJECT ASSEMBLEY VERSION -->
+	<Target Name="UpdateAssemblyInfo" DependsOnTargets="Clean">
+		<ItemGroup>
+			<VersionMajor Include="$(ProductVersion.Split('.')[0])" />
+			<VersionMinor Include="$(ProductVersion.Split('.')[1])" />
+		</ItemGroup>
+		<AssemblyInfo CodeLanguage="CS"
+			OutputFile="$(CoreProjectDir)\Properties\VersionInfo.cs"
+			AssemblyVersion="@(VersionMajor).@(VersionMinor).*"
+			AssemblyInformationalVersion="$(ProductVersion)"/>
+	</Target>
+
+	<!-- COMPILE -->
+	<Target Name="Compile" DependsOnTargets="UpdateAssemblyInfo">
+		<MSBuild Projects="$(CoreProjectDir)\$(ProjectName).csproj" Properties="Configuration=$(BuildConfig)"/>
+	</Target>
+
+	<!-- PREPARE FILES -->
+	<Target Name="PrepareFiles" DependsOnTargets="Compile">
+		<ItemGroup>
+			<BinFiles Include="$(CoreProjectDir)\bin\$(BuildConfig)\$(ProjectName).dll" />
+			<PdbFiles Include="$(CoreProjectDir)\bin\$(BuildConfig)\$(ProjectName).pdb" />
+			<SrcFiles Include="$(CoreProjectDir)\**\*.cs" Exclude="$(CoreProjectDir)\obj\**"/>
+			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.core.nuspec" />
+			<NuSpecFile Include="$(MSBuildProjectDirectory)\package.nuspec" />
+			<NugetReadmeFile Include="$(MSBuildProjectDirectory)\readme.txt" />
+		</ItemGroup>
+		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
+		<Copy SourceFiles="@(PdbFiles)" DestinationFolder="$(BuildNuGetDir)\lib\net45" />
+		<Copy SourceFiles="@(SrcFiles)" DestinationFiles="@(SrcFiles->'$(BuildNuGetDir)\src\%(RecursiveDir)%(Filename)%(Extension)')" />
+		<Copy SourceFiles="@(NuSpecFile)" DestinationFolder="$(BuildNuGetDir)" />
+		<Copy SourceFiles="@(NugetReadmeFile)" DestinationFolder="$(BuildNuGetDir)" />
+	</Target>
+
+	<!-- MANIFEST FOR NUGET PACKAGE -->
+	<Target Name="Manifest" DependsOnTargets="PrepareFiles">
+
+		<ItemGroup>
+			<CoreManifestFiles Include="$(BuildNuGetDir)\**\*" Exclude="$(BuildNuGetDir)\package.core.nuspec,$(BuildNuGetDir)\package.nuspec,$(BuildNuGetDir)\readme.txt" />
+			<ManifestFiles Include="$(BuildNuGetDir)\readme.txt" />
+		</ItemGroup>
+
+		<!-- Core -->
+		<MSBuild.NuGet.Tasks.ManifestUpdate
+			ManifestFile="$(BuildNuGetDir)\package.core.nuspec"
+			WorkingDirectory="$(BuildNuGetDir)"
+			Id="$(CorePackageId)"
+			Title="$(CorePackageName)"
+			Description="$(Readme)"
+			Summary="$(Readme)"
+			Version="$(ProductVersion)"
+			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
+			Authors="$(AuthorName)"
+			Owners="$(Owners)"
+			Copyright="$(Copyright)"
+			LicenseUrl="$(PackageLicenseUrl)"
+			ProjectUrl="$(ProjectUrl)"
+			IconUrl="$(IconUrl)"
+			Language="$(Language)"
+			RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
+			Tags="$(Tags)"
+			Files="@(CoreManifestFiles)" />
+	
+		<!-- Complete -->
+		<MSBuild.NuGet.Tasks.ManifestUpdate
+			ManifestFile="$(BuildNuGetDir)\package.nuspec"
+			WorkingDirectory="$(BuildNuGetDir)"
+			Id="$(PackageId)"
+			Title="$(PackageName)"
+			Description="$(Readme)"
+			Summary="$(Readme)"
+			Version="$(ProductVersion)"
+			MinimumRequiredUmbracoVersion ="$(MinUmbracoVersion)"
+			Authors="$(AuthorName)"
+			Owners="$(Owners)"
+			Copyright="$(Copyright)"
+			LicenseUrl="$(PackageLicenseUrl)"
+			ProjectUrl="$(ProjectUrl)"
+			IconUrl="$(IconUrl)"
+			Language="$(Language)"
+			RequireLicenseAcceptance="$(RequireLicenseAcceptance)"
+			Tags="$(Tags)"
+			Files="@(ManifestFiles)" />
+
+		<!-- Update the core dependency version. Have to use XMLUpdate as MSBuild.Nuget doesn't support this yet -->
+		<XmlUpdate
+			Prefix="nu"
+			Namespace="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd"
+			XmlFileName="$(BuildNuGetDir)\package.nuspec"
+			XPath="/nu:package/nu:metadata/nu:dependencies/nu:dependency[@id='$(CorePackageId)']/@version"
+			Value="$(ProductVersion)" />
+
+	</Target>
+
+	<!-- PACKAGE -->
+	<Target Name="Package" DependsOnTargets="Manifest">
+
+		<!-- Core -->
+		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\src\.nuget\NuGet.exe"
+			ManifestFile="$(BuildNuGetDir)\package.core.nuspec"
+			BasePath="$(BuildNuGetDir)"
+			Version="$(ProductVersion)"
+			OutputDirectory="$(ArtifactsDir)"
+			Symbols="true" />
+
+		<!-- Complete -->
+		<MSBuild.NuGet.Tasks.Pack NuGetExePath="$(RootDir)\src\.nuget\NuGet.exe"
+			ManifestFile="$(BuildNuGetDir)\package.nuspec"
+			BasePath="$(BuildNuGetDir)"
+			Version="$(ProductVersion)"
+			OutputDirectory="$(ArtifactsDir)"
+			Symbols="false" />
+
+	</Target>
+
+</Project>
