@@ -24,10 +24,10 @@ artifacts:
 deploy:
     # MyGet Deployment for builds & releases
   - provider: NuGet
-    server: https://www.myget.org/F/umbraco-packages/
-    symbol_server: https://nuget.symbolsource.org/MyGet/umbraco-packages
+    server: https://www.myget.org/F/umbracoidentity-oauth/
+    symbol_server: https://nuget.symbolsource.org/MyGet/umbracoidentity-oauth
     api_key:
-      secure: 36/Ax5O+e6wENlhoTwgvoEBZV3FG4XjF429SNTej2qsGTAL+cdfA1kT/tm1St8vx
+      secure: gHDTL46KZcLzj6J8m//TJgaCOJCl9ixR//rXjO18HRlCsfPYYz7dU81u2D5zd+ZN
     artifact: /.*\.nupkg/
     on:
       branch: develop
