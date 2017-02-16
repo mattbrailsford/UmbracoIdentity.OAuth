@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 
-namespace UmbracoIdentity.OAuth
+namespace UmbracoIdentity.OAuth.Tokens
 {
     public class HmacSigningCredentials : SigningCredentials
     {

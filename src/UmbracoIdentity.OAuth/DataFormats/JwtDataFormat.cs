@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens;
 using Microsoft.Owin.Security;
+using UmbracoIdentity.OAuth.Tokens;
 
 namespace UmbracoIdentity.OAuth.DataFormats
 {

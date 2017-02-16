@@ -253,7 +253,7 @@
   <ItemGroup>
     <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="DataFormats\JwtDataFormat.cs" />
-    <Compile Include="HmacSigningCredentials.cs" />
+    <Compile Include="Tokens\HmacSigningCredentials.cs" />
     <Compile Include="IOAuthStore.cs" />
     <Compile Include="Models\OAuthClient.cs" />
     <Compile Include="Models\OAuthRefreshToken.cs" />
