@@ -4,7 +4,9 @@
 
 UmbracoIdentity.OAuth for Umbraco has been installed.
 
-Before you begin however, addition configuration is required. Firstly, you'll need to add the ~/oauth2/ path to your umbracoReservedPaths app setting in the web.config, then add 2 new app settings as follows:
+Before you begin however, addition configuration is required. Firstly, please make sure you follow any configuration instructions for UmbracoIdentity before configuring UmbracoIdentity.OAuth.
+
+Next, you'll need to add the ~/oauth2/ path to your umbracoReservedPaths app setting in the web.config, then add 2 new app settings as follows:
 
 <add key="as:AudienceId" value="xbQUxahU1VuXfDQZ90Qh4pr3r8fkaBn3OQUZEsPtF8k2OvYN" />
 <add key="as:AudienceSecret" value="YXVpOWlmUWpDSWxpZTRUeVZ6MkpJUVFQZmlxOVI0YW0=" />
