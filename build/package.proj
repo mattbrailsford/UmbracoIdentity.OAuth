@@ -19,7 +19,7 @@
 		<CorePackageName>UmbracoIdentity.OAuth.Core</CorePackageName>
 		<PackageId>UmbracoIdentity.OAuth</PackageId>
 		<PackageName>UmbracoIdentity.OAuth</PackageName>
-		<Readme>An ad-on library to UmbracoIdentity to allow OAuth authentication for front-end members</Readme>
+		<Readme>An ad-on library to UmbracoIdentity to allow OAuth authentication of front-end members</Readme>
 		<AuthorName>Matt Brailsford</AuthorName>
 		<AuthorUrl>https://github.com/mattbrailsford/UmbracoIdentity.OAuth/graphs/contributors</AuthorUrl>
 		<Owners>Matt Brailsford</Owners>
