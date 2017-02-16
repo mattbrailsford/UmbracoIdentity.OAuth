@@ -1,5 +1,5 @@
 # UmbracoIdentity.OAuth
-UmbracoIdentity.OAuth is an add-on library to [UmbracoIdentity](https://github.com/Shazwazza/UmbracoIdentity) providing an OAuth2 endpoint from which you can authenticate Umbraco Members. The reason for to do this is to allow remote / authenticated access to your custom API controllers, such as in the scenario of developing an web/mobile app.
+UmbracoIdentity.OAuth is an add-on library to [UmbracoIdentity](https://github.com/Shazwazza/UmbracoIdentity) providing an OAuth2 endpoint from which you can authenticate Umbraco Members. The reason to do this is to allow remote / authenticated access to your custom API controllers, such as in the scenario of developing a web/mobile app.
 
 ## Installation
 
