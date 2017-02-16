@@ -249,3 +249,4 @@ Cached/
 # Custom
 build/_nuget
 src/UmbracoIdentity.OAuth.TestHarness
+src/UmbracoIdentity.OAuth.Matt.*
