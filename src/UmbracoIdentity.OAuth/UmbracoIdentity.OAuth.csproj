@@ -206,9 +206,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Thinktecture.IdentityModel.Core">
-      <HintPath>..\packages\Thinktecture.IdentityModel.Core.1.4.0\lib\net45\Thinktecture.IdentityModel.Core.dll</HintPath>
-    </Reference>
     <Reference Include="TidyNet, Version=1.0.0.0, Culture=neutral">
       <HintPath>..\packages\UmbracoCms.Core.7.5.6\lib\TidyNet.dll</HintPath>
       <Private>True</Private>
@@ -256,6 +253,7 @@
   <ItemGroup>
     <Compile Include="AppBuilderExtensions.cs" />
     <Compile Include="DataFormats\JwtDataFormat.cs" />
+    <Compile Include="HmacSigningCredentials.cs" />
     <Compile Include="IOAuthStore.cs" />
     <Compile Include="Models\OAuthClient.cs" />
     <Compile Include="Models\OAuthRefreshToken.cs" />
