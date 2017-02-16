@@ -34,7 +34,7 @@ Once installed, you'll need to configure an OAuthClient in the database (a demo 
 * Secret = An SHA256 hashed random string used to validate authentication requests from secure applications
 * SecurityLevel = Indentifies whether the client is a secure, compiled app = 1, or insecure, noncompiled app, such as javascript = 0
 * Active = Flag to easily enable / disable the client
-* RefreshTokenLifeTime = Time in seconds a refresh token is valid for, the shorter the more secure, but requires user to login more if left for longer periods
+* RefreshTokenLifeTime = Time in minutes a refresh token is valid for, the shorter the more secure, but requires member to login more if left for longer periods
 * AllowedOrigin = Sets the Access-Control-Allow-Origin header on auth requests, restricting requests to specific domains. If configuring an insecure app, it's strongly recommended this is configured to allowed domains only. Wildcard * allows all origins.
 
 To authenticate a member, a post request should be made to /oauth2/token with a body containing the following key values:
